@@ -119,6 +119,65 @@ Latency (total time incl. body read), 500 requests, concurrency 8
 All times in milliseconds.
 ```
 
+`imgproxy/run.sh -n 1000 -c 32`:
+
+```go
+large.jpg      direct    p50=   5.38ms p99=  26.92ms errors=0
+large.jpg      raw       p50= 384.35ms p99= 729.05ms errors=0
+large.jpg      reencode  p50=1290.14ms p99=3588.02ms errors=0
+large.jpg      resize    p50= 185.44ms p99=1405.17ms errors=0
+large.jpg      webp      p50= 188.48ms p99=1978.60ms errors=1
+large.jpg      avif      p50= 240.08ms p99=1682.58ms errors=0
+medium.jpg     direct    p50=   2.20ms p99=  22.57ms errors=0
+medium.jpg     raw       p50=  93.97ms p99= 264.96ms errors=0
+medium.jpg     reencode  p50= 210.52ms p99= 906.62ms errors=0
+medium.jpg     resize    p50=  95.19ms p99= 233.26ms errors=0
+medium.jpg     webp      p50=  93.35ms p99= 336.45ms errors=0
+medium.jpg     avif      p50=  98.71ms p99= 185.47ms errors=0
+medium.png     direct    p50=   8.85ms p99=  70.11ms errors=0
+medium.png     raw       p50= 490.23ms p99= 776.53ms errors=0
+medium.png     reencode  p50=1185.20ms p99=2494.74ms errors=0
+medium.png     resize    p50= 228.92ms p99=2111.06ms errors=1
+medium.png     webp      p50= 227.67ms p99=2593.01ms errors=0
+medium.png     avif      p50= 257.47ms p99=2049.36ms errors=0
+small.jpg      direct    p50=   1.01ms p99=  19.22ms errors=0
+small.jpg      raw       p50=  14.96ms p99=  35.38ms errors=0
+small.jpg      reencode  p50=  58.89ms p99= 118.01ms errors=0
+small.jpg      resize    p50=  69.51ms p99= 111.71ms errors=0
+small.jpg      webp      p50=  84.24ms p99= 434.02ms errors=0
+small.jpg      avif      p50=  96.25ms p99= 224.33ms errors=0
+
+imgproxy latency (total time incl. body read), 1000 requests, concurrency 32
+
+       image  scenario    bytes  ttfb p50      p50      p90      p99      max    rps        p50 vs direct  errors
+   large.jpg    direct    2.4MB      4.11     5.38    10.20    26.92    34.28   4378                    -       0
+   large.jpg       raw    2.4MB      9.59   384.35   561.55   729.05  3667.65     76    +378.97ms (71.5x)       0
+   large.jpg  reencode    1.9MB    667.13  1290.14  2441.70  3588.02  4330.95     22  +1284.76ms (239.9x)       0
+   large.jpg    resize    3.9KB    185.39   185.44   240.25  1405.17  2839.85    134    +180.06ms (34.5x)       0
+   large.jpg      webp    2.0KB    188.43   188.48   264.99  1978.60  4258.44    104    +183.10ms (35.0x)       1
+   large.jpg      avif    2.9KB    240.03   240.08   404.90  1682.58  3427.57     90    +234.71ms (44.6x)       0
+  medium.jpg    direct  423.7KB      1.82     2.20     5.65    22.57    28.79   9000                    -       0
+  medium.jpg       raw  423.7KB     10.83    93.97   185.64   264.96   475.44    291     +91.78ms (42.8x)       0
+  medium.jpg  reencode  346.5KB    158.82   210.52   424.86   906.62  1251.74    130    +208.33ms (95.8x)       0
+  medium.jpg    resize    3.5KB     95.16    95.19   165.58   233.26   504.86    296     +93.00ms (43.3x)       0
+  medium.jpg      webp    1.8KB     93.28    93.35   148.26   336.45  1129.11    295     +91.15ms (42.5x)       0
+  medium.jpg      avif    2.7KB     98.68    98.71   129.14   185.47   912.90    300     +96.51ms (44.9x)       0
+  medium.png    direct    3.2MB      5.84     8.85    25.25    70.11    83.25   2204                    -       0
+  medium.png       raw    3.2MB      9.61   490.23   582.74   776.53  2227.72     63    +481.38ms (55.4x)       0
+  medium.png  reencode    3.0MB    509.60  1185.20  1816.10  2494.74  5174.65     25  +1176.36ms (134.0x)       0
+  medium.png    resize   60.4KB    227.01   228.92   361.98  2111.06  4446.74     92    +220.08ms (25.9x)       1
+  medium.png      webp    1.8KB    227.62   227.67   360.32  2593.01  4927.95     89    +218.83ms (25.7x)       0
+  medium.png      avif    2.6KB    257.41   257.47   602.44  2049.36  4103.31     86    +248.63ms (29.1x)       0
+   small.jpg    direct   65.7KB      0.93     1.01     6.68    19.22    27.22  10925                    -       0
+   small.jpg       raw   65.7KB      7.98    14.96    20.80    35.38    38.92   2014     +13.94ms (14.8x)       0
+   small.jpg  reencode   54.4KB     58.59    58.89    84.38   118.01   128.37    507     +57.88ms (58.2x)       0
+   small.jpg    resize    6.8KB     69.35    69.51    88.77   111.71   125.14    444     +68.50ms (68.7x)       0
+   small.jpg      webp    3.3KB     84.14    84.24   106.19   434.02   476.89    328     +83.23ms (83.2x)       0
+   small.jpg      avif    4.7KB     96.13    96.25   148.01   224.33   262.40    303     +95.24ms (95.1x)       0
+
+All times in milliseconds.
+```
+
 `ipx/run.sh`:
 
 ```go
